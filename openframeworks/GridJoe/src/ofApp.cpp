@@ -207,7 +207,10 @@ void ofApp::pixelOddsSetup() {
 void ofApp::setup() {
     pixelOddsSetup();
     initGlobals();
+    
     ofHideCursor();
+    ofSetVerticalSync(false);
+    ofSetFrameRate(fps);
     
     for (int y = 0; y < numRows; y++) {
         for (int x = 0; x < numColumns; x++) {
