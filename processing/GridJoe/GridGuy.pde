@@ -20,7 +20,7 @@ class GridGuy {
     fillColor = fillColorOrig;
     
     hoveredColor = color(0);
-    clickedColor = color(255);
+    clickedColor = color(random(21,87));
 
     hovered = false;
     clicked = false;
@@ -105,7 +105,7 @@ class GridGuy {
 
   void draw() {
     fillColor = fillColorOrig;
-    noStroke();
+    tex.noStroke();
 
     if (hovered && !clicked) {
       fillColor = hoveredColor;
@@ -118,9 +118,9 @@ class GridGuy {
   }
 
   void drawRect() {
-    fill(fillColor, alpha);
-    rectMode(CENTER);
-    rect(posX, posY, guyWidth, guyHeight);
+    tex.fill(fillColor, alpha);
+    tex.rectMode(CENTER);
+    tex.rect(posX, posY, guyWidth, guyHeight);
   }
   
   void drawPoint() {

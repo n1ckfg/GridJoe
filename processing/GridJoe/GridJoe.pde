@@ -11,8 +11,8 @@ int numFrames = 50;
 int renderCounterMax = 1000;
 //----
 int pixelSize = 5;
-int sW = 1440;
-int sH = 900;
+int sW = 640;
+int sH = 480;
 int fps = 60;
 
 int numColumns, numRows;
@@ -214,12 +214,11 @@ void pixelOddsSetup() {
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 void setup() {
-  //size(640, 480, P2D);
-  fullScreen(P2D);
+  size(50, 50, P2D);
+  surface.setSize(sW, sH);
   
   noCursor();
-  //size(50, 50, P2D);
-  //surface.setSize(sW, sH);
+
   frameRate(fps);
 
   pixelOddsSetup();
@@ -233,17 +232,23 @@ void setup() {
   }
   
   target = new Target();
+  
+  bloomSetup();
+  opticalFlowSetup();
 }
 
 
-void draw() {
-  background(0);
-  
+void draw() { 
   target.run();
   if (target.armResetAll) {
     resetAll();
     target.armResetAll = false;
   }
+  
+  tex.beginDraw();
+  tex.blendMode(NORMAL);
+  tex.background(0);
+  tex.blendMode(ADD);
   
   for (int y = 0; y < numRows; y++) {
     for (int x = 0; x < numColumns; x++) {
@@ -253,6 +258,10 @@ void draw() {
       mainGrid[x][y].run();
     }
   }
+  tex.endDraw();
+  
+  opticalFlowDraw();
+  bloomDraw();
   
   surface.setTitle("" + frameRate);
 }
