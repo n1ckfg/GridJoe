@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E4B69B5A0A3A1756003C02F2"
-               BuildableName = "GridGuysFX.app"
-               BlueprintName = "GridGuysFX"
-               ReferencedContainer = "container:GridGuysFX.xcodeproj">
+               BuildableName = "GridJoe.app"
+               BlueprintName = "GridJoe"
+               ReferencedContainer = "container:GridJoe.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E4B69B5A0A3A1756003C02F2"
-            BuildableName = "GridGuysFX.app"
-            BlueprintName = "GridGuysFX"
-            ReferencedContainer = "container:GridGuysFX.xcodeproj">
+            BuildableName = "GridJoe.app"
+            BlueprintName = "GridJoe"
+            ReferencedContainer = "container:GridJoe.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -52,9 +52,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E4B69B5A0A3A1756003C02F2"
-            BuildableName = "GridGuysFX.app"
-            BlueprintName = "GridGuysFX"
-            ReferencedContainer = "container:GridGuysFX.xcodeproj">
+            BuildableName = "GridJoe.app"
+            BlueprintName = "GridJoe"
+            ReferencedContainer = "container:GridJoe.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -70,9 +70,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E4B69B5A0A3A1756003C02F2"
-            BuildableName = "GridGuysFX.app"
-            BlueprintName = "GridGuysFX"
-            ReferencedContainer = "container:GridGuysFX.xcodeproj">
+            BuildableName = "GridJoe.app"
+            BlueprintName = "GridJoe"
+            ReferencedContainer = "container:GridJoe.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

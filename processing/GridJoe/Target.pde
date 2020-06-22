@@ -1,20 +1,26 @@
 class Target {
+  
   float posX, posY, targetX, targetY;
   int minDist;
-  float speedMin = 0.01;
-  float speedMax = 0.05;
-  float speed;
+  float speedMin, speedMax, speed;
   boolean clicked;
-  float clickOdds = 0.1;
-  float chooseOdds = 0.01;
-  int markTime = 0;
-  int timeInterval = 200;
-  
+  float clickOdds, chooseOdds;
+  int markTime, timeInterval;
+  boolean armResetAll;
+
   Target() {
+    speedMin = 0.01;
+    speedMax = 0.05;
+    clickOdds = 0.1;
+    chooseOdds = 0.01;
+    markTime = 0;
+    timeInterval = 200;
+  
     posX = width/2;
-    posY = width/2;
+    posY = height/2;
     minDist = 5;
     clicked = false;
+    armResetAll = false;
     
     pickTarget();
   }
@@ -37,7 +43,7 @@ class Target {
     speed = random(speedMin, speedMax);
     float r = random(1);
     if (r < clickOdds) clicked = !clicked;
-    if (r < chooseOdds) resetAll();
+    if (r < chooseOdds) armResetAll = true;
   }
   
 }

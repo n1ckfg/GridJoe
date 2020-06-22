@@ -5,8 +5,8 @@ class GridGuy {
     
     public:
         GridGuy(float x, float y, float w, float h, string s, float cc, int dc, int lc, int rc);
-        void run();
-        void update();
+        void run(float &x, float &y, bool &b);
+        void update(float &x, float &y, bool &b);
         void mainFire();
         void draw();
         void drawPoint();

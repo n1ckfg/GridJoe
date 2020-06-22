@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "GridGuy.h"
+#include "Target.h"
 
 class ofApp : public ofBaseApp {
 
@@ -31,9 +32,9 @@ class ofApp : public ofBaseApp {
         int numFrames = 50;
         int renderCounterMax = 1000;
         //----
-        int pixelSize = 5;
-        int sW = 640;
-        int sH = 480;
+        int pixelSize = 7;
+        int sW = 960;
+        int sH = 540;
         int fps = 60;
 
         int numColumns, numRows;
@@ -42,5 +43,7 @@ class ofApp : public ofBaseApp {
         string setRules = "";
         float odds_X_Yplus1, odds_Xminus1_Y, odds_X_Yminus1, odds_Xplus1_Y, odds_Xplus1_Yplus1, odds_Xminus1_YminuX1, odds_Xplus1_Yminus1, odds_Xminus1_Yplus1;
         vector<float> randomValues = { 0, 0, 0, 0, 0, 0, 0, 0 };
-    
+            
+        Target target;
+
 };

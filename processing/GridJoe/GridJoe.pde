@@ -240,6 +240,10 @@ void draw() {
   background(0);
   
   target.run();
+  if (target.armResetAll) {
+    resetAll();
+    target.armResetAll = false;
+  }
   
   for (int y = 0; y < numRows; y++) {
     for (int x = 0; x < numColumns; x++) {

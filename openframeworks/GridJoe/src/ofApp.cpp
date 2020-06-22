@@ -207,6 +207,7 @@ void ofApp::pixelOddsSetup() {
 void ofApp::setup() {
     pixelOddsSetup();
     initGlobals();
+    ofHideCursor();
     
     for (int y = 0; y < numRows; y++) {
         for (int x = 0; x < numColumns; x++) {
@@ -214,6 +215,8 @@ void ofApp::setup() {
             guysInit(x, y);
         }
     }
+    
+    target = Target();
 }
 
 void ofApp::update() {
@@ -223,12 +226,18 @@ void ofApp::update() {
 void ofApp::draw() {
     ofBackground(0);
 
+    target.run();
+    if (target.armResetAll) {
+      resetAll();
+      target.armResetAll = false;
+    }
+    
     for (int y = 0; y < numRows; y++) {
         for (int x = 0; x < numColumns; x++) {
             int loc = x + (y * numColumns);
 
             rulesHandler(x, y);
-            mainGrid[x][y].run();
+            mainGrid[x][y].run(target.posX, target.posY, target.clicked);
         }
     }
 }

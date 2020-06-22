@@ -1,5 +1,5 @@
 #include "GridGuy.h"
-    
+
 GridGuy::GridGuy(float x, float y, float w, float h, string s, float cc, int dc, int lc, int rc) {
     birthTime = ofGetElapsedTimeMillis();
     alpha = 255;
@@ -8,8 +8,8 @@ GridGuy::GridGuy(float x, float y, float w, float h, string s, float cc, int dc,
     fillColorOrig = ofColor(0);
     fillColor = fillColorOrig;
     
-    hoveredColor = ofColor(255, 0, 0);
-    clickedColor = ofColor(255, 255, 0);
+    hoveredColor = ofColor(0);
+    clickedColor = ofColor(255);
 
     hovered = false;
     clicked = false;
@@ -36,13 +36,13 @@ GridGuy::GridGuy(float x, float y, float w, float h, string s, float cc, int dc,
     }
 }
 
-void GridGuy::run() {
-    update();
+void GridGuy::run(float &x, float &y, bool &b) {
+    update(x, y, b);
     draw();
 }
 
-void GridGuy::update() {
-    if (ofDist(ofGetMouseX(), ofGetMouseY(), posX, posY) < guyWidth) {
+void GridGuy::update(float &x, float &y, bool &b) {
+    if (ofDist(x, y, posX, posY) < guyWidth) {
         hovered = true;
         birthTime = ofGetElapsedTimeMillis();
         alpha = 255;
@@ -50,7 +50,7 @@ void GridGuy::update() {
         hovered = false;
     }
 
-    if (hovered && ofGetMousePressed()) mainFire();
+    if (hovered && b) mainFire();
 
     if (kaboom) {
         alpha = 255;
