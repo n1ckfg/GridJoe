@@ -84,9 +84,12 @@ void opticalFlowDraw() {
 
   // draw final render
   tex.beginDraw();
-  //tex.tint(20,100,10);
+  int r = int(random(48, 64));
+  int g = int(random(120, 128));
+  int b = int(random(32, 64));
+  tex.tint(r, g, b);
   tex.image(bufferWrite, 0, 0, tex.width, tex.height);
-  //tex.noTint();
+  tex.noTint();
   tex.endDraw();  
   
 }
