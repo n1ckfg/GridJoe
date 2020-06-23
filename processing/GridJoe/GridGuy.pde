@@ -2,11 +2,8 @@ class GridGuy {
 
   String[] rulesArray = { "NWcorner", "NEcorner", "SWcorner", "SEcorner", "Nrow", "Srow", "Wrow", "Erow" };
   boolean[] switchArray = { false, false, false, false, false, false, false, false };
-  color[] fillColorArray = {      
-    color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 0, 255), color(50), color(60), color(70), color(80)
-  };
-  boolean debugColors, strokeLines, hovered, clicked, kaboom;
-  color strokeColor, fillColorOrig, fillColor, hoveredColor, clickedColor;
+  boolean clicked, kaboom;
+  color fillColorOrig, fillColor, clickedColor;
   float posX, posY, guyWidth, guyHeight, chaos;
   String applyRule;
   int delayCountDownOrig, delayCountDown, lifeCountDownOrig, lifeCountDown, respawnCountDownOrig, respawnCountDown;
@@ -19,10 +16,8 @@ class GridGuy {
     fillColorOrig = color(0);
     fillColor = fillColorOrig;
     
-    hoveredColor = color(0);
     clickedColor = color(random(21,87));
 
-    hovered = false;
     clicked = false;
     kaboom = false;
 
@@ -55,16 +50,6 @@ class GridGuy {
   }
 
   void update() {
-    if (dist(target.posX, target.posY, posX, posY) < guyWidth) {
-      hovered = true;
-      birthTime = millis();
-      alpha = 255;
-    } else {
-      hovered = false;
-    }
-
-    if (hovered && target.clicked) mainFire();
-
     if (kaboom) {
       alpha = 255;
       birthTime = millis();
@@ -107,32 +92,14 @@ class GridGuy {
     fillColor = fillColorOrig;
     tex.noStroke();
 
-    if (hovered && !clicked) {
-      fillColor = hoveredColor;
-    } else if(clicked) {
+    if(clicked) {
       fillColor = clickedColor;
     }
 
     alpha -= ((millis() - birthTime)/2);
-    drawRect();
-  }
 
-  void drawRect() {
     tex.fill(fillColor, alpha);
-    tex.rectMode(CENTER);
     tex.rect(posX, posY, guyWidth, guyHeight);
-  }
-  
-  void drawPoint() {
-    stroke(fillColor, alpha);
-    strokeWeight(guyWidth);
-    point(posX, posY);
-  }
-
-  void drawEllipse() {
-    fill(fillColor, alpha);
-    ellipseMode(CENTER);
-    ellipse(posX, posY, guyWidth, guyHeight);
   }
 
 }
