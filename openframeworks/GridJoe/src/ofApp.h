@@ -32,10 +32,10 @@ class ofApp : public ofBaseApp {
         int numFrames = 50;
         int renderCounterMax = 1000;
         //----
-        int pixelSize = 8;
+        int pixelSize = 5;
         int sW = 720;
         int sH = 480;
-        int fps = 30;
+        int fps = 60;
 
         int numColumns, numRows;
         float guyWidth, guyHeight, startX, startY;

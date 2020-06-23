@@ -90,7 +90,6 @@ void ofApp::resetAll() {
     //currentFrame = 0;
     for (int y = 0; y < numRows; y++) {
         for (int x = 0; x < numColumns; x++) {
-            mainGrid[x][y].hovered = false;
             mainGrid[x][y].clicked = false;
             //mainGrid[x][y].kaboom = false;
             mainGrid[x][y].delayCountDown = mainGrid[x][y].delayCountDownOrig;
@@ -234,13 +233,15 @@ void ofApp::draw() {
       resetAll();
       target.armResetAll = false;
     }
-    
+
+    int targetX = int(target.posX / pixelSize);
+    int targetY = int(target.posY / pixelSize);
     for (int y = 0; y < numRows; y++) {
         for (int x = 0; x < numColumns; x++) {
-            int loc = x + (y * numColumns);
-
+            if (x == targetX && y == targetY) mainGrid[x][y].mainFire();
+            
             rulesHandler(x, y);
-            mainGrid[x][y].run(target.posX, target.posY, target.clicked);
+            mainGrid[x][y].run();
         }
     }
 }

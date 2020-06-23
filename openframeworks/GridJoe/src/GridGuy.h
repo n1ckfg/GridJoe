@@ -5,8 +5,8 @@ class GridGuy {
     
     public:
         GridGuy(float x, float y, float w, float h, string s, float cc, int dc, int lc, int rc);
-        void run(float &x, float &y, bool &b);
-        void update(float &x, float &y, bool &b);
+        void run();
+        void update();
         void mainFire();
         void draw();
         void drawPoint();
@@ -16,8 +16,8 @@ class GridGuy {
         vector<string> rulesArray = { "NWcorner", "NEcorner", "SWcorner", "SEcorner", "Nrow", "Srow", "Wrow", "Erow" };
         vector<bool> switchArray = { false, false, false, false, false, false, false, false };
 
-        bool hovered, clicked, kaboom;
-        ofColor strokeColor, fillColorOrig, fillColor, hoveredColor, clickedColor;
+        bool clicked, kaboom;
+        ofColor fillColorOrig, fillColor, clickedColor;
         float posX, posY, guyWidth, guyHeight, chaos;
         string applyRule;
         int delayCountDownOrig, delayCountDown, lifeCountDownOrig, lifeCountDown, respawnCountDownOrig, respawnCountDown;

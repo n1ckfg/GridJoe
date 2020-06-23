@@ -4,14 +4,11 @@ GridGuy::GridGuy(float x, float y, float w, float h, string s, float cc, int dc,
     birthTime = ofGetElapsedTimeMillis();
     alpha = 255;
     
-    strokeColor = ofColor(0);
     fillColorOrig = ofColor(0);
     fillColor = fillColorOrig;
     
-    hoveredColor = ofColor(0);
     clickedColor = ofColor(255);
 
-    hovered = false;
     clicked = false;
     kaboom = false;
 
@@ -36,22 +33,12 @@ GridGuy::GridGuy(float x, float y, float w, float h, string s, float cc, int dc,
     }
 }
 
-void GridGuy::run(float &x, float &y, bool &b) {
-    update(x, y, b);
+void GridGuy::run() {
+    update();
     draw();
 }
 
-void GridGuy::update(float &x, float &y, bool &b) {
-    if (ofDist(x, y, posX, posY) < guyWidth) {
-        hovered = true;
-        birthTime = ofGetElapsedTimeMillis();
-        alpha = 255;
-    } else {
-        hovered = false;
-    }
-
-    if (hovered && b) mainFire();
-
+void GridGuy::update() {
     if (kaboom) {
         alpha = 255;
         birthTime = ofGetElapsedTimeMillis();
@@ -93,9 +80,7 @@ void GridGuy::mainFire() {
 void GridGuy::draw() {
     fillColor = fillColorOrig;
 
-    if (hovered && !clicked) {
-        fillColor = hoveredColor;
-    } else if(clicked) {
+    if (clicked) {
         fillColor = clickedColor;
     }
 
