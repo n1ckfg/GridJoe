@@ -205,6 +205,9 @@ void ofApp::pixelOddsSetup() {
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 void ofApp::setup() {
+    settings.loadFile("settings.xml");
+    pixelSize = settings.getValue("settings:pixel_size", 8);
+
     //shader.load("shader");
     fbo.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA);
     int planeResX = (int) ofGetWidth() / pixelSize;

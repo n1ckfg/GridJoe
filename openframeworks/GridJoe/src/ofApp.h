@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxXmlSettings.h"
 #include "GridGuy.h"
 #include "Target.h"
 
@@ -23,7 +24,8 @@ class ofApp : public ofBaseApp {
         ofShader shader;
         ofPlanePrimitive plane;
         ofFbo fbo;
-                
+        ofxXmlSettings settings;
+        
         //---   MAIN CONTROLS   ---
         //if you want to avoid chain reactions, try 0, 20, 100, 0.2
         int delayCounter = 0;  // delays start of spread
@@ -36,7 +38,7 @@ class ofApp : public ofBaseApp {
         int numFrames = 50;
         int renderCounterMax = 1000;
         //----
-        int pixelSize = 8;
+        int pixelSize;
         int sW = 720;
         int sH = 480;
         int fps = 30;
