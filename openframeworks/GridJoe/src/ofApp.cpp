@@ -205,6 +205,13 @@ void ofApp::pixelOddsSetup() {
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 void ofApp::setup() {
+    //shader.load("shader");
+    fbo.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA);
+    int planeResX = (int) ofGetWidth() / pixelSize;
+    int planeResY = (int) ofGetHeight() / pixelSize;
+    plane.set(ofGetWidth(), ofGetHeight(), planeResX, planeResY);
+    plane.mapTexCoordsFromTexture(fbo.getTextureReference());
+
     pixelOddsSetup();
     initGlobals();
     
@@ -223,12 +230,7 @@ void ofApp::setup() {
 }
 
 void ofApp::update() {
-        //
-}
-
-void ofApp::draw() {
-    ofBackground(0);
-
+    fbo.begin();
     target.run();
     if (target.armResetAll) {
       resetAll();
@@ -243,4 +245,19 @@ void ofApp::draw() {
             mainGrid[x][y].run(target.posX, target.posY, target.clicked);
         }
     }
+    fbo.end();
+}
+
+void ofApp::draw() {   
+    ofBackground(0);
+
+    fbo.getTextureReference().bind();
+    //shader.begin();
+    ofPushMatrix();
+    ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
+    ofScale(1, -1, 1);
+    plane.drawWireframe();
+    ofPopMatrix();
+    //shader.end();   
+    fbo.getTextureReference().unbind();
 }

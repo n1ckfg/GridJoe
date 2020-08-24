@@ -19,7 +19,11 @@ class ofApp : public ofBaseApp {
         void guysInit(int x, int y);
         void resetAll();
         void pixelOddsSetup();
-    
+ 
+        ofShader shader;
+        ofPlanePrimitive plane;
+        ofFbo fbo;
+                
         //---   MAIN CONTROLS   ---
         //if you want to avoid chain reactions, try 0, 20, 100, 0.2
         int delayCounter = 0;  // delays start of spread
