@@ -1,17 +1,17 @@
-// ~ ~ ~ ~ ~ ~ ~
+"use strict";
 
-//---     MAIN CONTROLS     ---
-//if you want to achain reactions, try 0, 20, 100, 0.2
+// ---     MAIN CONTROLS     ---
+// if you want to avoid chain reactions, try 0, 20, 100, 0.2
 let delayCounter = 0;    // int, delays start of spread
 let lifeCounter = 20;    // int, how long spread lasts
 let respawnCounter = 50; // int, how long until retrigger
 let globalChaos = 0.3;    // float, 0 = min, 1 = max
-//-------------------------
+// -------------------------
 let choose = 0;    // int
 let maxChoices = 7;    // int
 let numFrames = 50;    // int
 let renderCounterMax = 1000;    // int
-//----
+// ----
 let pixelSize = 5;    // int
 let sW = 640;    // int
 let sH = 480;    // int
@@ -25,7 +25,7 @@ let odds_X_Yplus1, odds_Xminus1_Y, odds_X_Yminus1, odds_Xplus1_Y, odds_Xplus1_Yp
 
 let target;    // Target
 
-setup() {
+function setup() {
     createCanvas(sW, sH);
     
     noCursor();
@@ -48,17 +48,17 @@ setup() {
     opticalFlowSetup();
 }
 
-draw() {
+function draw() {
     target.run();
     if (target.armResetAll) {
         resetAll();
         target.armResetAll = false;
     }
     
-    tex.beginDraw();
-    tex.blendMode(NORMAL);
-    tex.background(0);
-    tex.blendMode(ADD);
+    beginDraw();
+    blendMode(NORMAL);
+    background(0);
+    blendMode(ADD);
     
     for (let y = 0; y < numRows; y++) {
         for (let x = 0; x < numColumns; x++) {
@@ -68,7 +68,7 @@ draw() {
             mainGrid[x][y].run();
         }
     }
-    tex.endDraw();
+    endDraw();
     
     opticalFlowDraw();
     bloomDraw();
@@ -76,11 +76,11 @@ draw() {
     surface.setTitle("" + frameRate);
 }
 
-keyPressed() {
+function keyPressed() {
     resetAll();
 }
 
-initGlobals() {
+function initGlobals() {
     numColumns = sW / pixelSize;
     numRows = sH / pixelSize;
 
@@ -94,7 +94,7 @@ initGlobals() {
     mainGrid = new GridGuy[numColumns][numRows];
 }
 
-rulesHandler(let x, let y) {
+function rulesHandler(let x, let y) {
     boolean[] sw = mainGrid[x][y].switchArray;
     if (sw[0] || sw[1] || sw[2] || sw[3] || sw[4] || sw[5] || sw[6] || sw[7]) return;
 
@@ -111,12 +111,12 @@ rulesHandler(let x, let y) {
     }
 }
 
-let diceHandler(let v1, let v2) { 
+function diceHandler(let v1, let v2) { 
     let rollDice = random(v1);  // float
     return rollDice < v2;
 }
 
-rulesInit(let x, let y) {
+function rulesInit(let x, let y) {
     setRules = "";
     if (x == 0 && y == 0) {
         setRules = "NWcorner";
@@ -137,7 +137,7 @@ rulesInit(let x, let y) {
     }
 }
 
-guysInit(let x, let y) { 
+function guysInit(let x, let y) { 
     mainGrid[x][y] = new GridGuy(startX, startY, guyWidth, guyHeight, setRules, globalChaos, delayCounter, lifeCounter, respawnCounter);
     if (startX < width - guyWidth) {
         startX += guyWidth;
@@ -148,7 +148,7 @@ guysInit(let x, let y) {
     println("init " + x + " " + y);
 }
 
-resetAll() {
+function resetAll() {
     startX = 0;
     startY = 0;
     //currentFrame = 0;
@@ -171,7 +171,7 @@ resetAll() {
 
 float[] randomValues = new float[8];
 
-pixelOddsSetup() {
+function pixelOddsSetup() {
     // temp
     for (let i = 0; i < randomValues.length; i++) {
         randomValues[i] = random(1);
@@ -272,50 +272,45 @@ pixelOddsSetup() {
 
 class Target {
 
-    let posX, posY, targetX, targetY;    // float
-    let minDist;    // int
-    let speedMin, speedMax, speed;    // float
-    let clicked;    // bool
-    let clickOdds, chooseOdds;    // float
-    let markTime, timeInterval;    // int
-    let armResetAll;    // bool
-
     constructor() {
-        speedMin = 0.01;
-        speedMax = 0.05;
-        clickOdds = 0.1;
-        chooseOdds = 0.01;
-        markTime = 0;
-        timeInterval = 200;
+        this.speedMin = 0.01;  // float
+        this.speedMax = 0.05;  // float
+        this.speed;  // float
+        this.clickOdds = 0.1;  // float
+        this.chooseOdds = 0.01;  // float
+        this.markTime = 0;  // int
+        this.timeInterval = 200;  // int
     
-        posX = width/2;
-        posY = height/2;
-        minDist = 5;
-        clicked = false;
-        armResetAll = false;
+        this.posX = width/2;  // float
+        this.posY = height/2;  // float
+        this.targetX;  // float
+        this.targetY;  // float
+        this.minDist = 5;  // int
+        this.clicked = false;
+        this.armResetAll = false;
         
-        pickTarget();
+        this.pickTarget();
     }
 
     run() {
-        posX = lerp(posX, targetX, speed);
-        posY = lerp(posY, targetY, speed);
+        this.posX = lerp(this.posX, this.targetX, this.speed);
+        this.posY = lerp(this.posY, this.targetY, this.speed);
         
-        if (millis() > markTime + timeInterval || dist(posX, posY, targetX, targetY) < minDist) {
-            pickTarget();
+        if (millis() > this.markTime + this.timeInterval || dist(this.posX, this.posY, this.targetX, this.targetY) < this.minDist) {
+            this.pickTarget();
         }
     }
     
     pickTarget() {
-        markTime = millis();
+        this.markTime = millis();
         
-        targetX = lerp(posX, random(0, width), 0.5);
-        targetY = lerp(posY, random(0, height), 0.5);
+        this.targetX = lerp(this.posX, random(0, width), 0.5);
+        this.targetY = lerp(this.posY, random(0, height), 0.5);
         
-        speed = random(speedMin, speedMax);
+        this.speed = random(this.speedMin, this.speedMax);
         let r = random(1);
-        if (r < clickOdds) clicked = !clicked;
-        if (r < chooseOdds) armResetAll = true;
+        if (r < this.clickOdds) this.clicked = !this.clicked;
+        if (r < this.chooseOdds) this.armResetAll = true;
     }
 
 }
@@ -427,7 +422,7 @@ class GridGuy {
 
     draw() {
         fillColor = fillColorOrig;
-        tex.noStroke();
+        noStroke();
 
         if (hovered && !clicked) {
             fillColor = hoveredColor;
@@ -440,9 +435,9 @@ class GridGuy {
     }
 
     drawRect() {
-        tex.fill(fillColor, alpha);
-        tex.rectMode(CENTER);
-        tex.rect(posX, posY, guyWidth, guyHeight);
+        fill(fillColor, alpha);
+        rectMode(CENTER);
+        rect(posX, posY, guyWidth, guyHeight);
     }
     
     drawPoint() {
@@ -459,4 +454,4 @@ class GridGuy {
 
 }
 
-//--    END
+// --    END
