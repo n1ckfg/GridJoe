@@ -19,7 +19,7 @@ let fps = 60;    // int
 
 let numColumns, numRows;    // int
 let guyWidth, guyHeight, startX, startY;    // float
-GridGuy[][] mainGrid;
+let mainGrid = [];  // GridGuy[][] 
 let setRules = "";    // string
 let odds_X_Yplus1, odds_Xminus1_Y, odds_X_Yminus1, odds_Xplus1_Y, odds_Xplus1_Yplus1, odds_Xminus1_YminuX1, odds_Xplus1_Yminus1, odds_Xminus1_Yplus1;    // float
 
@@ -42,10 +42,7 @@ function setup() {
         }
     }
     
-    target = new Target();
-    
-    bloomSetup();
-    opticalFlowSetup();
+    target = new Target();    
 }
 
 function draw() {
@@ -55,10 +52,7 @@ function draw() {
         target.armResetAll = false;
     }
     
-    beginDraw();
-    blendMode(NORMAL);
     background(0);
-    blendMode(ADD);
     
     for (let y = 0; y < numRows; y++) {
         for (let x = 0; x < numColumns; x++) {
@@ -67,13 +61,7 @@ function draw() {
             rulesHandler(x, y);
             mainGrid[x][y].run();
         }
-    }
-    endDraw();
-    
-    opticalFlowDraw();
-    bloomDraw();
-    
-    surface.setTitle("" + frameRate);
+    }  
 }
 
 function keyPressed() {
@@ -91,11 +79,18 @@ function initGlobals() {
     startY = guyHeight / 2;
 
     // make mainGrid a 2D array
-    mainGrid = new GridGuy[numColumns][numRows];
+    for (var i = 0; i < numColumns; i++) {
+        var mg = [];
+        for (var j = 0; j < numRows; j++) {
+            var g = new GridGuy(startX, startY, guyWidth, guyHeight, setRules, globalChaos, delayCounter, lifeCounter, respawnCounter);
+            mg.push(g);
+        }
+        mainGrid.push(mg);
+    }
 }
 
-function rulesHandler(let x, let y) {
-    boolean[] sw = mainGrid[x][y].switchArray;
+function rulesHandler(x, y) {  // int, int
+    let sw = mainGrid[x][y].switchArray;  // bool[]
     if (sw[0] || sw[1] || sw[2] || sw[3] || sw[4] || sw[5] || sw[6] || sw[7]) return;
 
     if (mainGrid[x][y].clicked) {
@@ -111,12 +106,12 @@ function rulesHandler(let x, let y) {
     }
 }
 
-function diceHandler(let v1, let v2) { 
+function diceHandler(v1, v2) {  // int, int
     let rollDice = random(v1);  // float
     return rollDice < v2;
 }
 
-function rulesInit(let x, let y) {
+function rulesInit(x, y) {  // int, int
     setRules = "";
     if (x == 0 && y == 0) {
         setRules = "NWcorner";
@@ -137,7 +132,7 @@ function rulesInit(let x, let y) {
     }
 }
 
-function guysInit(let x, let y) { 
+function guysInit(x, y) {  // int, int
     mainGrid[x][y] = new GridGuy(startX, startY, guyWidth, guyHeight, setRules, globalChaos, delayCounter, lifeCounter, respawnCounter);
     if (startX < width - guyWidth) {
         startX += guyWidth;
@@ -145,7 +140,7 @@ function guysInit(let x, let y) {
         startX = guyWidth / 2;
         startY += guyHeight;
     }
-    println("init " + x + " " + y);
+    console.log("init " + x + " " + y);
 }
 
 function resetAll() {
@@ -169,7 +164,7 @@ function resetAll() {
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-float[] randomValues = new float[8];
+let randomValues = new Array(8);  // float[]
 
 function pixelOddsSetup() {
     // temp
@@ -178,7 +173,7 @@ function pixelOddsSetup() {
     }
 
     choose = int(random(maxChoices));
-    println("choose: " + choose);
+    console.log("choose: " + choose);
     
     switch (choose) {
     case 0: 
@@ -316,50 +311,46 @@ class Target {
 }
 
 class GridGuy {
-
-    String[] rulesArray = { "NWcorner", "NEcorner", "SWcorner", "SEcorner", "Nrow", "Srow", "Wrow", "Erow" };    // string array
-    boolean[] switchArray = { false, false, false, false, false, false, false, false };    // bool array
-    color[] fillColorArray = {    // color array     
-        color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 0, 255), color(50), color(60), color(70), color(80)
-    };
-    let debugColors, strokeLines, hovered, clicked, kaboom;    // bool
-    let strokeColor, fillColorOrig, fillColor, hoveredColor, clickedColor;    // color
-    let posX, posY, guyWidth, guyHeight, chaos;    // float
-    let applyRule;    // string
-    let delayCountDownOrig, delayCountDown, lifeCountDownOrig, lifeCountDown, respawnCountDownOrig, respawnCountDown;    // int
-    let birthTime, alpha;    // int
     
-    constructor(x, y, w, h, s, cc, dc, lc, rc) {    // float, float, float, float, string, float, int, int, let                
-        birthTime = millis();
-        alpha = 255;
+    constructor(x, y, w, h, s, cc, dc, lc, rc) {    // float, float, float, float, string, float, int, int, int     
+        this.rulesArray = [ "NWcorner", "NEcorner", "SWcorner", "SEcorner", "Nrow", "Srow", "Wrow", "Erow" ];  // string[] 
+        this.switchArray = [ false, false, false, false, false, false, false, false ];  // bool[]  
+        this.fillColorArray = [ color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 0, 255), color(50), color(60), color(70), color(80) ];  // color[]          
         
-        fillColorOrig = color(0);
-        fillColor = fillColorOrig;
+
+        this.birthTime = millis();  // int
+        this.alpha = 255;  // int
         
-        hoveredColor = color(0);
-        clickedColor = color(random(21,87));
+        this.fillColorOrig = color(0);
+        this.fillColor = this.fillColorOrig; // int
+        this.strokeColor;
+        this.hoveredColor = color(0);
+        this.clickedColor = color(random(21,87));
 
-        hovered = false;
-        clicked = false;
-        kaboom = false;
+        this.debugColors = false;
+        this.strokeLines = false;
+        this.hovered = false;
+        this.clicked = false;
+        this.kaboom = false;
 
-        posX = x;
-        posY = y;
-        guyWidth = w;
-        guyHeight = h;
-        applyRule = s;
+        this.posX = x;  // float
+        this.posY = y;  // float
+        this.guyWidth = w;  // float
+        this.guyHeight = h;  // float
+        this.chaos = abs(1.0 - cc);  // float
 
-        chaos = abs(1.0 - cc);
-        delayCountDownOrig = int(random(dc * chaos, dc));
-        delayCountDown = delayCountDownOrig;
-        lifeCountDownOrig = int(random(lc * chaos, lc));
-        lifeCountDown = lifeCountDownOrig;
-        respawnCountDownOrig = int(random(rc * chaos, rc));
-        respawnCountDown = respawnCountDownOrig;
+        this.applyRule = s;  // string
+
+        this.delayCountDownOrig = int(random(dc * this.chaos, dc));  // int
+        this.delayCountDown = this.delayCountDownOrig;  // int
+        this.lifeCountDownOrig = int(random(lc * this.chaos, lc));  // int
+        this.lifeCountDown = this.lifeCountDownOrig;  // int
+        this.respawnCountDownOrig = int(random(rc * this.chaos, rc));  // int
+        this.respawnCountDown = this.respawnCountDownOrig;  // int
         
-        for (let i = 0; i < rulesArray.length; i++) {
-            if (applyRule == rulesArray[i]) {
-                switchArray[i] = true;
+        for (let i = 0; i < this.rulesArray.length; i++) {
+            if (this.applyRule == this.rulesArray[i]) {
+                this.switchArray[i] = true;
             }
         }
 
@@ -367,89 +358,89 @@ class GridGuy {
     }
 
     run() {
-        update();
-        draw();
+        this.update();
+        this.draw();
     }
 
     update() {
-        if (dist(target.posX, target.posY, posX, posY) < guyWidth) {
-            hovered = true;
-            birthTime = millis();
-            alpha = 255;
+        if (dist(target.posX, target.posY, this.posX, this.posY) < this.guyWidth) {
+            this.hovered = true;
+            this.birthTime = millis();
+            this.alpha = 255;
         } else {
-            hovered = false;
+            this.hovered = false;
         }
 
-        if (hovered && target.clicked) mainFire();
+        if (this.hovered && target.clicked) this.mainFire();
 
-        if (kaboom) {
-            alpha = 255;
-            birthTime = millis();
+        if (this.kaboom) {
+            this.alpha = 255;
+            this.birthTime = millis();
         
-            if (delayCountDown>0) {
-                delayCountDown--;
+            if (this.delayCountDown>0) {
+                this.delayCountDown--;
             } else {
-                kaboom = false;
-                clicked = true;
-                delayCountDown = delayCountDownOrig;
+                this.kaboom = false;
+                this.clicked = true;
+                this.delayCountDown = this.delayCountDownOrig;
             }
         }
 
-        if (clicked) {
-            if (lifeCountDown > 0) {
-                lifeCountDown--;
+        if (this.clicked) {
+            if (this.lifeCountDown > 0) {
+                this.lifeCountDown--;
             } else {
-                clicked = false;
+                this.clicked = false;
             }
         }
 
-        if (lifeCountDown == 0 && respawnCountDown > 0) {
-            respawnCountDown--;
+        if (this.lifeCountDown == 0 && this.respawnCountDown > 0) {
+            this.respawnCountDown--;
         } 
-        else if (respawnCountDown == 0) {
-            lifeCountDown = lifeCountDownOrig;
-            respawnCountDown = respawnCountDownOrig;
+        else if (this.respawnCountDown == 0) {
+            this.lifeCountDown = this.lifeCountDownOrig;
+            this.respawnCountDown = this.respawnCountDownOrig;
         }
     }
 
     mainFire() {
-        clicked = true;
-        kaboom = false;
-        delayCountDown = delayCountDownOrig;
-        lifeCountDown = lifeCountDownOrig;
-        respawnCountDown = respawnCountDownOrig;
+        this.clicked = true;
+        this.kaboom = false;
+        this.delayCountDown = this.delayCountDownOrig;
+        this.lifeCountDown = this.lifeCountDownOrig;
+        this.respawnCountDown = this.respawnCountDownOrig;
     }
 
     draw() {
-        fillColor = fillColorOrig;
+        this.fillColor = this.fillColorOrig;
         noStroke();
 
-        if (hovered && !clicked) {
-            fillColor = hoveredColor;
-        } else if(clicked) {
-            fillColor = clickedColor;
+        if (this.hovered && !this.clicked) {
+            this.fillColor = this.hoveredColor;
+        } else if (this.clicked) {
+            this.fillColor = this.clickedColor;
         }
 
-        alpha -= ((millis() - birthTime)/2);
-        drawRect();
+        this.alpha -= ((millis() - this.birthTime)/2);
+        this.drawRect();
     }
 
     drawRect() {
-        fill(fillColor, alpha);
+        fill(this.fillColor, this.alpha);
         rectMode(CENTER);
-        rect(posX, posY, guyWidth, guyHeight);
+        rect(this.posX, this.posY, this.guyWidth, this.guyHeight);
     }
     
     drawPoint() {
-        stroke(fillColor, alpha);
-        strokeWeight(guyWidth);
-        point(posX, posY);
+        stroke(this.fillColor, this.alpha);
+        strokeWeight(this.guyWidth);
+        point(this.posX, this.posY);
     }
 
     drawEllipse() {
-        fill(fillColor, alpha);
+        fill(this.fillColor, this.alpha);
         ellipseMode(CENTER);
-        ellipse(posX, posY, guyWidth, guyHeight);
+        ellipse(this.posX, this.posY, this.guyWidth, this.guyHeight);
     }
 
 }

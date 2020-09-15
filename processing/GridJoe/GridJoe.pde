@@ -1,5 +1,5 @@
 //---   MAIN CONTROLS   ---
-//if you want to avoid chain reactions, try 0, 20, 100, 0.2
+// if you want to avoid chain reactions, try 0, 20, 100, 0.2
 int delayCounter = 0;  // delays start of spread
 int lifeCounter = 20;  // how long spread lasts
 int respawnCounter = 50; // how long until retrigger
