@@ -56,7 +56,7 @@ function draw() {
     
     for (let y = 0; y < numRows; y++) {
         for (let x = 0; x < numColumns; x++) {
-            let loc = x + (y * numColumns);
+            //let loc = x + (y * numColumns);
 
             rulesHandler(x, y);
             mainGrid[x][y].run();
