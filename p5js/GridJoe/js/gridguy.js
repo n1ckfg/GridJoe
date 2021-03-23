@@ -111,8 +111,10 @@ class GridGuy {
             this.fillColor = this.clickedColor;
         }
 
-        this.alpha -= ((millis() - this.birthTime)/2);
-        this.drawRect();
+        if (this.fillColor !== this.fillColorOrig) {
+            this.alpha -= ((millis() - this.birthTime)/2);
+            this.drawRect();
+        }
     }
 
     drawRect() {
