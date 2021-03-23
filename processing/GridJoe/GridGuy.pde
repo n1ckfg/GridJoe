@@ -112,9 +112,11 @@ class GridGuy {
     } else if(clicked) {
       fillColor = clickedColor;
     }
-
-    alpha -= ((millis() - birthTime)/2);
-    drawRect();
+    
+    if (fillColor != fillColorOrig) {
+      alpha -= ((millis() - birthTime)/2);
+      drawRect();
+    }
   }
 
   void drawRect() {
