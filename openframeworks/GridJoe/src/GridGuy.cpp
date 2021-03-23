@@ -98,9 +98,11 @@ void GridGuy::draw() {
     } else if(clicked) {
         fillColor = clickedColor;
     }
-
-    alpha -= ((ofGetElapsedTimeMillis() - birthTime)/2);
-    drawRect();
+    
+    if (fillColor != fillColorOrig) {
+        alpha -= ((ofGetElapsedTimeMillis() - birthTime)/2);
+        drawRect();
+    }
 }
 
 void GridGuy::drawRect() {

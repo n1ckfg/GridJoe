@@ -234,6 +234,8 @@ void ofApp::setup() {
 
 void ofApp::update() {
     fbo.begin();
+    ofBackground(0);
+
     target.run();
     if (target.armResetAll) {
       resetAll();
