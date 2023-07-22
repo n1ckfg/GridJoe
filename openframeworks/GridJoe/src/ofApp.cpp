@@ -210,8 +210,8 @@ void ofApp::setup() {
 
     //shader.load("shader");
     fbo.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA);
-    int planeResX = (int) ofGetWidth() / pixelSize;
-    int planeResY = (int) ofGetHeight() / pixelSize;
+    int planeResX = 3; //(int) ofGetWidth() / pixelSize;
+    int planeResY = 3; //(int) ofGetHeight() / pixelSize;
     plane.set(ofGetWidth(), ofGetHeight(), planeResX, planeResY);
     plane.mapTexCoordsFromTexture(fbo.getTextureReference());
 
@@ -261,7 +261,7 @@ void ofApp::draw() {
     ofPushMatrix();
     ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
     ofScale(1, -1, 1);
-    plane.drawWireframe();
+    plane.draw();//drawWireframe();
     ofPopMatrix();
     //shader.end();   
     fbo.getTextureReference().unbind();
