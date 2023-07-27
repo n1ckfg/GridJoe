@@ -11,6 +11,7 @@ class GridGuy {
   String applyRule;
   int delayCountDownOrig, delayCountDown, lifeCountDownOrig, lifeCountDown, respawnCountDownOrig, respawnCountDown;
   int birthTime, alpha;
+  float xyscope_spread = 2;
   
   GridGuy(float x, float y, float w, float h, String s, float cc, int dc, int lc, int rc) {          
     birthTime = millis();
@@ -39,7 +40,7 @@ class GridGuy {
     lifeCountDown = lifeCountDownOrig;
     respawnCountDownOrig = int(random(rc * chaos, rc));
     respawnCountDown = respawnCountDownOrig;
-    
+       
     for (int i = 0; i < rulesArray.length; i++) {
       if (applyRule == rulesArray[i]) {
         switchArray[i] = true;
@@ -116,7 +117,7 @@ class GridGuy {
     if (fillColor != fillColorOrig) {
       alpha -= ((millis() - birthTime)/2);
       drawRect();
-      xy.point(posX, posY);
+      xy.line(posX, posY, posX + random(-xyscope_spread, xyscope_spread), posY + random(-xyscope_spread, xyscope_spread));
       totalPointsCounter++;
     }
   }
