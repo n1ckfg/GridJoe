@@ -30,6 +30,8 @@ float odds_X_Yplus1, odds_Xminus1_Y, odds_X_Yminus1, odds_Xplus1_Y, odds_Xplus1_
 Target target;
 PGraphics tex;
 
+boolean armClearWaves = true;
+
 void initGlobals() {
   numColumns = sW / pixelSize;
   numRows = sH / pixelSize;
@@ -254,10 +256,12 @@ void setup() {
   //xy.zRange(.5, 0);
 }
 
-
 void draw() {
-  if (totalPointsCounter > totalPointsClearLimit) xy.clearWaves();
-  totalPointsCounter = 0;
+  if (armClearWaves) {
+    xy.clearWaves();
+    totalPointsCounter = 0;
+    armClearWaves = false;
+  }
   
   background(0);
   
@@ -285,6 +289,7 @@ void draw() {
   surface.setTitle("" + frameRate);
 
   xy.buildWaves(); // build audio from shapes
+  if (totalPointsCounter > totalPointsClearLimit) armClearWaves = true;
 }
 
 //--  END
