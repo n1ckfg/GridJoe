@@ -257,9 +257,9 @@ void setup() {
 }
 
 void draw() {
+  totalPointsCounter = 0;
   if (armClearWaves) {
     xy.clearWaves();
-    totalPointsCounter = 0;
     armClearWaves = false;
   }
   
