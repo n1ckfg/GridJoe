@@ -22,5 +22,5 @@ class GridGuy {
         string applyRule;
         int delayCountDownOrig, delayCountDown, lifeCountDownOrig, lifeCountDown, respawnCountDownOrig, respawnCountDown;
         int birthTime, alpha;
-    
+            
 };

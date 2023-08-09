@@ -4,7 +4,7 @@
 class Target {
     
     public:
-        Target();
+        Target(int w, int h);
         void run();
         void pickTarget();
     
@@ -14,5 +14,7 @@ class Target {
         bool clicked, armResetAll;
         float clickOdds, chooseOdds;
         int markTime, timeInterval;
-    
+            
+        int sW, sH;
+        
 };

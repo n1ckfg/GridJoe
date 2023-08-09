@@ -75,7 +75,7 @@ void ofApp::rulesInit(int x, int y) {
 
 void ofApp::guysInit(int x, int y) {
     mainGrid[x][y] = GridGuy(startX, startY, guyWidth, guyHeight, setRules, globalChaos, delayCounter, lifeCounter, respawnCounter);
-    if (startX < ofGetWidth() - guyWidth) {
+    if (startX < sW - guyWidth) {
         startX += guyWidth;
     } else {
         startX = guyWidth / 2;
@@ -207,12 +207,20 @@ void ofApp::pixelOddsSetup() {
 void ofApp::setup() {
     settings.loadFile("settings.xml");
     pixelSize = settings.getValue("settings:pixel_size", 8);
-
+    sW = settings.getValue("settings:width", 720);
+    sH = settings.getValue("settings:height", 480);
+    fps = settings.getValue("settings:fps", 30);
+    
+    scaleW = (float) ofGetWidth() / (float) sW;
+    scaleH = (float) ofGetHeight() / (float) sH;
+    posX = (float) ofGetWidth() / 2.0;
+    posY = (float) ofGetHeight() / 2.0;
+    
     //shader.load("shader");
-    fbo.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA);
-    int planeResX = (int) ofGetWidth() / pixelSize;
-    int planeResY = (int) ofGetHeight() / pixelSize;
-    plane.set(ofGetWidth(), ofGetHeight(), planeResX, planeResY);
+    fbo.allocate(sW, sH, GL_RGBA);
+    int planeResX = 3;
+    int planeResY = 3;
+    plane.set(sW, sH, planeResX, planeResY);
     plane.mapTexCoordsFromTexture(fbo.getTextureReference());
 
     pixelOddsSetup();
@@ -229,7 +237,7 @@ void ofApp::setup() {
         }
     }
     
-    target = Target();
+    target = Target(sW, sH);
 }
 
 void ofApp::update() {
@@ -259,9 +267,9 @@ void ofApp::draw() {
     fbo.getTextureReference().bind();
     //shader.begin();
     ofPushMatrix();
-    ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
-    ofScale(1, -1, 1);
-    plane.drawWireframe();
+    ofTranslate(posX, posY);
+    ofScale(scaleW, scaleH, 1.0);
+    plane.draw();
     ofPopMatrix();
     //shader.end();   
     fbo.getTextureReference().unbind();

@@ -38,10 +38,8 @@ class ofApp : public ofBaseApp {
         int numFrames = 50;
         int renderCounterMax = 1000;
         //----
-        int pixelSize;
-        int sW = 720;
-        int sH = 480;
-        int fps = 30;
+        int pixelSize, sW, sH, fps;
+        float scaleW, scaleH, posX, posY;
 
         int numColumns, numRows;
         float guyWidth, guyHeight, startX, startY;
@@ -50,6 +48,6 @@ class ofApp : public ofBaseApp {
         float odds_X_Yplus1, odds_Xminus1_Y, odds_X_Yminus1, odds_Xplus1_Y, odds_Xplus1_Yplus1, odds_Xminus1_YminuX1, odds_Xplus1_Yminus1, odds_Xminus1_Yplus1;
         vector<float> randomValues = { 0, 0, 0, 0, 0, 0, 0, 0 };
             
-        Target target;
+        Target target = Target(0, 0);
 
 };

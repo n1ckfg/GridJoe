@@ -1,6 +1,10 @@
 #include "Target.h"
+#include "ofApp.h"
 
-Target::Target() {
+Target::Target(int w, int h) {
+    sW = w;
+    sH = h;
+    
     speedMin = 0.01;
     speedMax = 0.05;
     clickOdds = 0.1;
@@ -8,8 +12,8 @@ Target::Target() {
     markTime = 0;
     timeInterval = 200;
 
-    posX = ofGetWidth()/2;
-    posY = ofGetHeight()/2;
+    posX = sW/2;
+    posY = sH/2;
     minDist = 5;
     clicked = false;
     armResetAll = false;
@@ -29,8 +33,8 @@ void Target::run() {
 void Target::pickTarget() {
     markTime = ofGetElapsedTimeMillis();
 
-    targetX = ofLerp(posX, ofRandom(0, ofGetWidth()), 0.5);
-    targetY = ofLerp(posY, ofRandom(0, ofGetHeight()), 0.5);
+    targetX = ofLerp(posX, ofRandom(0, sW), 0.5);
+    targetY = ofLerp(posY, ofRandom(0, sH), 0.5);
 
     speed = ofRandom(speedMin, speedMax);
     float r = ofRandom(1);
