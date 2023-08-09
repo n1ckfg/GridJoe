@@ -81,7 +81,7 @@ void ofApp::guysInit(int x, int y) {
         startX = guyWidth / 2;
         startY += guyHeight;
     }
-    cout << "init " << x << " " << y << endl;
+    //cout << "init " << x << " " << y << endl;
 }
 
 void ofApp::resetAll() {
