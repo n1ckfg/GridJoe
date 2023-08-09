@@ -1,8 +1,85 @@
 #include "ofApp.h"
 
+void ofApp::setup() {
+#ifdef TARGET_OPENGLES
+    //shader.load("shaders/vhsc_es3");
+#else
+    if (ofIsGLProgrammableRenderer()) {
+        //shader.load("shaders/pixelvision_gl3");
+    }
+#endif
+
+    settings.loadFile("settings.xml");
+    pixelSize = settings.getValue("settings:pixel_size", 8);
+    sW = settings.getValue("settings:width", 720);
+    sH = settings.getValue("settings:height", 480);
+    fps = settings.getValue("settings:fps", 30);
+
+    fbo.allocate(sW, sH, GL_RGBA);
+    int planeW = ofGetWidth();
+    int planeH = ofGetHeight();
+    int planeResX = 3;
+    int planeResY = 3;
+    plane.set(planeW, planeH, planeResX, planeResY, OF_PRIMITIVE_TRIANGLES);
+    plane.mapTexCoordsFromTexture(fbo.getTextureReference());
+
+    pixelOddsSetup();
+    initGlobals();
+
+    ofHideCursor();
+    ofSetVerticalSync(false);
+    ofSetFrameRate(fps);
+
+    for (int y = 0; y < numRows; y++) {
+        for (int x = 0; x < numColumns; x++) {
+            rulesInit(x, y);
+            guysInit(x, y);
+        }
+    }
+
+    target = Target(sW, sH);
+}
+
+void ofApp::update() {
+    fbo.begin();
+    ofBackground(0);
+
+    target.run();
+    if (target.armResetAll) {
+        resetAll();
+        target.armResetAll = false;
+    }
+
+    for (int y = 0; y < numRows; y++) {
+        for (int x = 0; x < numColumns; x++) {
+            int loc = x + (y * numColumns);
+
+            rulesHandler(x, y);
+            mainGrid[x][y].run(target.posX, target.posY, target.clicked);
+        }
+    }
+    fbo.end();
+}
+
+void ofApp::draw() {
+    ofBackground(0);
+
+    fbo.getTextureReference().bind();
+    //shader.begin();
+    ofPushMatrix();
+    ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
+    ofScale(1.0, -1.0, 1.0);
+    plane.draw();
+    ofPopMatrix();
+    //shader.end();
+    fbo.getTextureReference().unbind();
+}
+
 void ofApp::keyPressed(int key){
     resetAll();
 }
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 void ofApp::initGlobals() {
     numColumns = sW / pixelSize;
@@ -202,75 +279,3 @@ void ofApp::pixelOddsSetup() {
     }
 }
 
-// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-
-void ofApp::setup() {
-    settings.loadFile("settings.xml");
-    pixelSize = settings.getValue("settings:pixel_size", 8);
-    sW = settings.getValue("settings:width", 720);
-    sH = settings.getValue("settings:height", 480);
-    fps = settings.getValue("settings:fps", 30);
-    
-    scaleW = (float) ofGetWidth() / (float) sW;
-    scaleH = (float) ofGetHeight() / (float) sH;
-    posX = (float) ofGetWidth() / 2.0;
-    posY = (float) ofGetHeight() / 2.0;
-    
-    //shader.load("shader");
-    fbo.allocate(sW, sH, GL_RGBA);
-    int planeResX = 3;
-    int planeResY = 3;
-    plane.set(sW, sH, planeResX, planeResY);
-    plane.mapTexCoordsFromTexture(fbo.getTextureReference());
-
-    pixelOddsSetup();
-    initGlobals();
-    
-    ofHideCursor();
-    ofSetVerticalSync(false);
-    ofSetFrameRate(fps);
-    
-    for (int y = 0; y < numRows; y++) {
-        for (int x = 0; x < numColumns; x++) {
-            rulesInit(x, y);
-            guysInit(x, y);
-        }
-    }
-    
-    target = Target(sW, sH);
-}
-
-void ofApp::update() {
-    fbo.begin();
-    ofBackground(0);
-
-    target.run();
-    if (target.armResetAll) {
-      resetAll();
-      target.armResetAll = false;
-    }
-    
-    for (int y = 0; y < numRows; y++) {
-        for (int x = 0; x < numColumns; x++) {
-            int loc = x + (y * numColumns);
-
-            rulesHandler(x, y);
-            mainGrid[x][y].run(target.posX, target.posY, target.clicked);
-        }
-    }
-    fbo.end();
-}
-
-void ofApp::draw() {   
-    ofBackground(0);
-
-    fbo.getTextureReference().bind();
-    //shader.begin();
-    ofPushMatrix();
-    ofTranslate(posX, posY);
-    ofScale(scaleW, scaleH, 1.0);
-    plane.draw();
-    ofPopMatrix();
-    //shader.end();   
-    fbo.getTextureReference().unbind();
-}

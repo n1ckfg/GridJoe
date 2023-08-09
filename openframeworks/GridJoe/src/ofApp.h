@@ -25,7 +25,7 @@ class ofApp : public ofBaseApp {
         ofPlanePrimitive plane;
         ofFbo fbo;
         ofxXmlSettings settings;
-        
+
         //---   MAIN CONTROLS   ---
         //if you want to avoid chain reactions, try 0, 20, 100, 0.2
         int delayCounter = 0;  // delays start of spread
@@ -39,7 +39,6 @@ class ofApp : public ofBaseApp {
         int renderCounterMax = 1000;
         //----
         int pixelSize, sW, sH, fps;
-        float scaleW, scaleH, posX, posY;
 
         int numColumns, numRows;
         float guyWidth, guyHeight, startX, startY;
