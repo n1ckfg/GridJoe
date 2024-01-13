@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E4B69B5A0A3A1756003C02F2"
-               BuildableName = "GridJoe.app"
-               BlueprintName = "GridJoe"
-               ReferencedContainer = "container:GridJoe.xcodeproj">
+               BuildableName = "GridJoeSyphon.app"
+               BlueprintName = "GridJoeSyphon"
+               ReferencedContainer = "container:GridJoeSyphon.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -31,9 +31,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E4B69B5A0A3A1756003C02F2"
-            BuildableName = "GridJoe.app"
-            BlueprintName = "GridJoe"
-            ReferencedContainer = "container:GridJoe.xcodeproj">
+            BuildableName = "GridJoeSyphon.app"
+            BlueprintName = "GridJoeSyphon"
+            ReferencedContainer = "container:GridJoeSyphon.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <Testables>
@@ -54,9 +54,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E4B69B5A0A3A1756003C02F2"
-            BuildableName = "GridJoe.app"
-            BlueprintName = "GridJoe"
-            ReferencedContainer = "container:GridJoe.xcodeproj">
+            BuildableName = "GridJoeSyphon.app"
+            BlueprintName = "GridJoeSyphon"
+            ReferencedContainer = "container:GridJoeSyphon.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -71,9 +71,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E4B69B5A0A3A1756003C02F2"
-            BuildableName = "GridJoe.app"
-            BlueprintName = "GridJoe"
-            ReferencedContainer = "container:GridJoe.xcodeproj">
+            BuildableName = "GridJoeSyphon.app"
+            BlueprintName = "GridJoeSyphon"
+            ReferencedContainer = "container:GridJoeSyphon.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
