@@ -26,7 +26,7 @@ let odds_X_Yplus1, odds_Xminus1_Y, odds_X_Yminus1, odds_Xplus1_Y, odds_Xplus1_Yp
 let target;    // Target
 
 function setup() {
-    createCanvas(sW, sH);
+    createCanvas(sW, sH, WEBGL);
     
     noCursor();
 
