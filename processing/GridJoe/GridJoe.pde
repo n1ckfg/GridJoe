@@ -214,8 +214,8 @@ void pixelOddsSetup() {
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 void setup() {
-  size(50, 50, P2D);
-  surface.setSize(sW, sH);
+  size(640, 480, P2D);
+  //surface.setSize(sW, sH);
   
   noCursor();
 
