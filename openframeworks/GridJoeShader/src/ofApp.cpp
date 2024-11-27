@@ -2,10 +2,10 @@
 
 void ofApp::setup() {
 #ifdef TARGET_OPENGLES
-    //shader.load("shaders/vhsc_es3");
+    shader.load("shaders/vhsc_es3");
 #else
     if (ofIsGLProgrammableRenderer()) {
-        //shader.load("shaders/pixelvision_gl3");
+        shader.load("shaders/vhsc_gl3");
     }
 #endif
 
@@ -65,13 +65,13 @@ void ofApp::draw() {
     ofBackground(0);
 
     fbo.getTextureReference().bind();
-    //shader.begin();
+    shader.begin();
     ofPushMatrix();
     ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
     ofScale(1.0, -1.0, 1.0);
     plane.draw();
     ofPopMatrix();
-    //shader.end();
+    shader.end();
     fbo.getTextureReference().unbind();
 }
 
