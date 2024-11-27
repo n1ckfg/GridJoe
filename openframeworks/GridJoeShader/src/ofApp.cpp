@@ -2,10 +2,10 @@
 
 void ofApp::setup() {
 #ifdef TARGET_OPENGLES
-    shader.load("shaders/vhsc_es3");
+    shader.load("shaders/displacement_es3");
 #else
     if (ofIsGLProgrammableRenderer()) {
-        shader.load("shaders/vhsc_gl3");
+        shader.load("shaders/displacement_gl3");
     }
 #endif
 
@@ -15,17 +15,17 @@ void ofApp::setup() {
     sH = settings.getValue("settings:height", 480);
     fps = settings.getValue("settings:fps", 30);
 
-    fbo.allocate(sW, sH, GL_RGBA);
-    int planeW = ofGetWidth();
-    int planeH = ofGetHeight();
-    int planeResX = 3;
-    int planeResY = 3;
-    plane.set(planeW, planeH, planeResX, planeResY, OF_PRIMITIVE_TRIANGLES);
-    plane.mapTexCoordsFromTexture(fbo.getTextureReference());
-
     pixelOddsSetup();
     initGlobals();
 
+    fbo.allocate(sW, sH, GL_RGBA);
+    int planeW = ofGetWidth();
+    int planeH = ofGetHeight();
+    int planeResX = numColumns;
+    int planeResY = numRows;
+    plane.set(planeW, planeH, planeResX, planeResY, OF_PRIMITIVE_TRIANGLES);
+    plane.mapTexCoordsFromTexture(fbo.getTextureReference());
+    
     ofHideCursor();
     ofSetVerticalSync(false);
     ofSetFrameRate(fps);
@@ -69,7 +69,7 @@ void ofApp::draw() {
     ofPushMatrix();
     ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
     ofScale(1.0, -1.0, 1.0);
-    plane.draw();
+    plane.drawWireframe();
     ofPopMatrix();
     shader.end();
     fbo.getTextureReference().unbind();
