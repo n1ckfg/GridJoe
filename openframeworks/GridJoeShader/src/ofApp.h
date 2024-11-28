@@ -25,6 +25,7 @@ class ofApp : public ofBaseApp {
         ofPlanePrimitive plane;
         ofFbo fbo;
         ofxXmlSettings settings;
+	bool doWireframe;
 
         //---   MAIN CONTROLS   ---
         //if you want to avoid chain reactions, try 0, 20, 100, 0.2

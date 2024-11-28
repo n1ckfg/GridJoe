@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <settings>
-    <width>720</width>
-    <height>480</height>
+    <width>1920</width>
+    <height>1080</height>
     <pixel_size>8</pixel_size>
     <fps>30</fps>
 </settings>

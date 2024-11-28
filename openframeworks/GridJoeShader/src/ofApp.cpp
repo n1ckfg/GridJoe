@@ -14,6 +14,7 @@ void ofApp::setup() {
     sW = settings.getValue("settings:width", 720);
     sH = settings.getValue("settings:height", 480);
     fps = settings.getValue("settings:fps", 30);
+    doWireframe = (bool) settings.getValue("settings:wireframe", 0);
 
     pixelOddsSetup();
     initGlobals();
@@ -69,7 +70,13 @@ void ofApp::draw() {
     ofPushMatrix();
     ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
     ofScale(1.0, -1.0, 1.0);
-    plane.drawWireframe();
+
+    if (doWireframe) {
+        plane.drawWireframe();
+    } else {
+        plane.draw();
+    }
+
     ofPopMatrix();
     shader.end();
     fbo.getTextureReference().unbind();
