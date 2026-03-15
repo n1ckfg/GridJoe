@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <settings>
-    <width>192</width>
-    <height>120</height>
-    <pixel_size>2</pixel_size>
-    <fps>60</fps>
-    <wireframe>1</wireframe>
+    <width>252</width>
+    <height>184</height>
+    <pixel_size>1</pixel_size>
+    <fps>30</fps>
+    <wireframe>0</wireframe>
 </settings>
