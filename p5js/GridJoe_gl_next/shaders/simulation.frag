@@ -35,7 +35,6 @@ float hash(vec2 p) {
 
 void main() {
     vec2 uv = gl_FragCoord.xy / u_resolution;
-    uv.y = 1.0 - uv.y;
     vec2 texel = 1.0 / u_resolution;
 
     vec4 current = texture2D(u_state, uv);
@@ -52,23 +51,22 @@ void main() {
 
     // Target hover check
     vec2 targetUV = (u_target + u_resolution * 0.5) / u_resolution;
-    targetUV.y = 1.0 - targetUV.y;
     float targetDist = distance(uv, targetUV);
     float cellSize = texel.x;
 
-    // Sample neighbors
-    vec4 nw = texture2D(u_state, uv + vec2(-texel.x, texel.y));
-    vec4 n  = texture2D(u_state, uv + vec2(0.0, texel.y));
-    vec4 ne = texture2D(u_state, uv + vec2(texel.x, texel.y));
+    // Sample neighbors (in screen space: Y+ is down)
+    vec4 nw = texture2D(u_state, uv + vec2(-texel.x, -texel.y));
+    vec4 n  = texture2D(u_state, uv + vec2(0.0, -texel.y));
+    vec4 ne = texture2D(u_state, uv + vec2(texel.x, -texel.y));
     vec4 w  = texture2D(u_state, uv + vec2(-texel.x, 0.0));
     vec4 e  = texture2D(u_state, uv + vec2(texel.x, 0.0));
-    vec4 sw = texture2D(u_state, uv + vec2(-texel.x, -texel.y));
-    vec4 s  = texture2D(u_state, uv + vec2(0.0, -texel.y));
-    vec4 se = texture2D(u_state, uv + vec2(texel.x, -texel.y));
+    vec4 sw = texture2D(u_state, uv + vec2(-texel.x, texel.y));
+    vec4 s  = texture2D(u_state, uv + vec2(0.0, texel.y));
+    vec4 se = texture2D(u_state, uv + vec2(texel.x, texel.y));
 
     // Boundaries (as floats for step functions)
-    float isTop = step(1.0 - texel.y * 1.5, uv.y);
-    float isBottom = step(uv.y, texel.y * 1.5);
+    float isTop = step(uv.y, texel.y * 1.5);
+    float isBottom = step(1.0 - texel.y * 1.5, uv.y);
     float isLeft = step(uv.x, texel.x * 1.5);
     float isRight = step(1.0 - texel.x * 1.5, uv.x);
 

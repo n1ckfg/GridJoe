@@ -8,7 +8,6 @@ uniform float u_time;
 
 void main() {
     vec2 uv = gl_FragCoord.xy / u_resolution;
-    uv.y = 1.0 - uv.y;
 
     vec4 state = texture2D(u_state, uv);
 

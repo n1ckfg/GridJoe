@@ -1,10 +1,10 @@
 "use strict";
 
 // ---     MAIN CONTROLS     ---
-let delayCounter = 20;
-let lifeCounter = 20;
-let respawnCounter = 50;
-let globalChaos = 0.3;
+let delayCounter = 5; //0;
+let lifeCounter = 80; //20;
+let respawnCounter = 50; //50;
+let globalChaos = 0.63; //0.3;
 // -------------------------
 let choose = 0;
 let maxChoices = 7;
@@ -15,11 +15,10 @@ let fps = 60;
 // Shader resources
 let simulationShader;
 let renderShader;
-let stateA, stateB;
-let currentState = 0;
 
-// Offscreen buffer for simulation output
-let simOutput;
+// p5.js Framebuffers for ping-pong
+let fboA, fboB;
+let currentBuffer = 0;
 
 // Target (autonomous cursor)
 let target;
@@ -50,23 +49,30 @@ function setup() {
     frameRate(fps);
     noStroke();
 
-    // 2D buffers for state (works as texture source)
-    stateA = createGraphics(sW, sH);
-    stateB = createGraphics(sW, sH);
-    stateA.pixelDensity(1);
-    stateB.pixelDensity(1);
-    stateA.background(0);
-    stateB.background(0);
+    // Create framebuffers using p5.js API (available in p5.js 1.7+)
+    let fboSettings = {
+        width: sW,
+        height: sH,
+        density: 1,
+        textureFiltering: NEAREST,
+        antialias: false,
+        depth: false
+    };
+    fboA = createFramebuffer(fboSettings);
+    fboB = createFramebuffer(fboSettings);
 
-    // WEBGL buffer for simulation output (for capturing)
-    simOutput = createGraphics(sW, sH, WEBGL);
-    simOutput.pixelDensity(1);
-    simOutput.noStroke();
+    // Clear both
+    fboA.begin();
+    clear();
+    fboA.end();
+    fboB.begin();
+    clear();
+    fboB.end();
 
     target = new Target();
     setupPattern();
 
-    console.log("GridJoe GPU initialized");
+    console.log("GridJoe GPU - p5.js Framebuffer ping-pong initialized");
 }
 
 function setupPattern() {
@@ -94,14 +100,16 @@ function draw() {
         target.armResetAll = false;
     }
 
-    let readBuf = currentState === 0 ? stateA : stateB;
-    let writeBuf = currentState === 0 ? stateB : stateA;
+    let readFBO = currentBuffer === 0 ? fboA : fboB;
+    let writeFBO = currentBuffer === 0 ? fboB : fboA;
 
-    // Step 1: Run simulation shader to offscreen buffer
-    simOutput.shader(simulationShader);
-    simulationShader.setUniform('u_state', readBuf);
+    // --- SIMULATION PASS: render to framebuffer ---
+    writeFBO.begin();
+    clear();
+    shader(simulationShader);
+    simulationShader.setUniform('u_state', readFBO.color);
     simulationShader.setUniform('u_resolution', [sW, sH]);
-    simulationShader.setUniform('u_target', [target.posX, target.posY]);
+    simulationShader.setUniform('u_target', [target.posX, -target.posY]);
     simulationShader.setUniform('u_targetClicked', target.clicked ? 1.0 : 0.0);
     simulationShader.setUniform('u_time', millis() / 1000.0);
     simulationShader.setUniform('u_deltaTime', deltaTime / 1000.0);
@@ -117,18 +125,16 @@ function draw() {
     simulationShader.setUniform('u_lifeFrames', lifeCounter);
     simulationShader.setUniform('u_respawnFrames', respawnCounter);
     simulationShader.setUniform('u_chaos', globalChaos);
-    simOutput.rect(-sW/2, -sH/2, sW, sH);
-
-    // Step 2: Copy simulation output to 2D write buffer (state preservation)
-    writeBuf.image(simOutput, 0, 0);
+    rect(-sW/2, -sH/2, sW, sH);
+    writeFBO.end();
 
     // Swap buffers
-    currentState = 1 - currentState;
+    currentBuffer = 1 - currentBuffer;
 
-    // Step 3: Render to screen using the render shader
-    background(0);
+    // --- RENDER PASS: render to screen ---
+    clear();
     shader(renderShader);
-    renderShader.setUniform('u_state', writeBuf);
+    renderShader.setUniform('u_state', writeFBO.color);
     renderShader.setUniform('u_resolution', [sW, sH]);
     renderShader.setUniform('u_time', millis() / 1000.0);
     rect(-sW/2, -sH/2, sW, sH);
@@ -140,8 +146,12 @@ function keyPressed() {
 }
 
 function resetAll() {
-    stateA.background(0);
-    stateB.background(0);
+    fboA.begin();
+    clear();
+    fboA.end();
+    fboB.begin();
+    clear();
+    fboB.end();
     setupPattern();
 }
 
