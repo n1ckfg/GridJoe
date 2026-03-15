@@ -2,9 +2,9 @@
 
 // ---     MAIN CONTROLS     ---
 let delayCounter = 5; //0;
-let lifeCounter = 80; //20;
+let lifeCounter = 40; //20;
 let respawnCounter = 50; //50;
-let globalChaos = 0.63; //0.3;
+let globalChaos = 0.3; //0.3;
 // -------------------------
 let choose = 0;
 let maxChoices = 7;
@@ -96,7 +96,8 @@ function setupPattern() {
 function draw() {
     target.run();
     if (target.armResetAll) {
-        resetAll();
+        //resetAll();
+        setupPattern(); // Only change pattern, keep animation
         target.armResetAll = false;
     }
 
