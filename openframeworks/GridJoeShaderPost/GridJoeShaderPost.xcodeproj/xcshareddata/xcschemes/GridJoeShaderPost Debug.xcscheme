@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E4B69B5A0A3A1756003C02F2"
-               BuildableName = "GridJoeShader.app"
-               BlueprintName = "GridJoeShader"
-               ReferencedContainer = "container:GridJoeShader.xcodeproj">
+               BuildableName = "GridJoeShaderPost.app"
+               BlueprintName = "GridJoeShaderPost"
+               ReferencedContainer = "container:GridJoeShaderPost.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -31,9 +31,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E4B69B5A0A3A1756003C02F2"
-            BuildableName = "GridJoeShader.app"
-            BlueprintName = "GridJoeShader"
-            ReferencedContainer = "container:GridJoeShader.xcodeproj">
+            BuildableName = "GridJoeShaderPost.app"
+            BlueprintName = "GridJoeShaderPost"
+            ReferencedContainer = "container:GridJoeShaderPost.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <Testables>
@@ -54,9 +54,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E4B69B5A0A3A1756003C02F2"
-            BuildableName = "GridJoeShader.app"
-            BlueprintName = "GridJoeShader"
-            ReferencedContainer = "container:GridJoeShader.xcodeproj">
+            BuildableName = "GridJoeShaderPost.app"
+            BlueprintName = "GridJoeShaderPost"
+            ReferencedContainer = "container:GridJoeShaderPost.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <EnvironmentVariables>
@@ -88,9 +88,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E4B69B5A0A3A1756003C02F2"
-            BuildableName = "GridJoeShader.app"
-            BlueprintName = "GridJoeShader"
-            ReferencedContainer = "container:GridJoeShader.xcodeproj">
+            BuildableName = "GridJoeShaderPost.app"
+            BlueprintName = "GridJoeShaderPost"
+            ReferencedContainer = "container:GridJoeShaderPost.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
