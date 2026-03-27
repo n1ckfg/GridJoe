@@ -3,9 +3,11 @@
 void ofApp::setup() {
 #ifdef TARGET_OPENGLES
     shader.load("shaders/displacement_es3");
+    postShader.load("shaders/pixelvision_es3");
 #else
     if (ofIsGLProgrammableRenderer()) {
         shader.load("shaders/displacement_gl3");
+        postShader.load("shaders/pixelvision_gl3");
     }
 #endif
 
@@ -20,6 +22,7 @@ void ofApp::setup() {
     initGlobals();
 
     fbo.allocate(sW, sH, GL_RGBA);
+    postFbo.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA);
     int planeW = ofGetWidth();
     int planeH = ofGetHeight();
     int planeResX = numColumns;
@@ -63,6 +66,8 @@ void ofApp::update() {
 }
 
 void ofApp::draw() {
+    // First pass: render displacement effect to postFbo
+    postFbo.begin();
     ofBackground(0);
 
     fbo.getTextureReference().bind();
@@ -80,6 +85,16 @@ void ofApp::draw() {
     ofPopMatrix();
     shader.end();
     fbo.getTextureReference().unbind();
+    postFbo.end();
+
+    // Second pass: apply pixelvision post effect
+    ofBackground(0);
+    postShader.begin();
+#ifdef TARGET_OPENGLES
+    postShader.setUniform2f("texSize", postFbo.getWidth(), postFbo.getHeight());
+#endif
+    postFbo.draw(0, 0);
+    postShader.end();
 }
 
 void ofApp::keyPressed(int key){

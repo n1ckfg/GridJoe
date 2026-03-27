@@ -50,5 +50,5 @@ void main() {
     float luminance0 = tone_map_aces(getLuminance(posterizedColor));
     float luminance1 = pow(map(luminance0, 0.05, 0.95, 0.0, 1.0), 1.0 / gamma);
 
-    outputColor = vec4(luminance1, luminance1, luminance1, 1.0);
+    outputColor = vec4(luminance1, luminance1, luminance1 + 0.1, 1.0);
 }

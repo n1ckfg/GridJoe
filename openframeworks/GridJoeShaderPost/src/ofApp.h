@@ -22,8 +22,10 @@ class ofApp : public ofBaseApp {
         void pixelOddsSetup();
  
         ofShader shader;
+        ofShader postShader;
         ofPlanePrimitive plane;
         ofFbo fbo;
+        ofFbo postFbo;
         ofxXmlSettings settings;
 	bool doWireframe;
 
